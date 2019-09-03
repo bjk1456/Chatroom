@@ -32,7 +32,8 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session) {
-        //TODO: add on open connection.
+       System.out.println("inside onOpen");
+       System.out.println("session.toString() == " + session.getId());
     }
 
     /**
