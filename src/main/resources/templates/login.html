@@ -150,6 +150,17 @@
      * Login
      */
     function login() {
+        $.ajax({
+                type: 'GET',
+                url: "http://localhost:8080/index?username=" + $('#username').val(),
+                contentType: 'text/plain',
+                crossDomain: false,
+                async:true,
+                success:function(response) {
+
+                window.location = '/index?username=' + $('#username').val();
+                }
+            });
         // TODO: complete the login function
     }
 
