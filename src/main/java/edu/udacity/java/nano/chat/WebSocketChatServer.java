@@ -1,6 +1,8 @@
 package edu.udacity.java.nano.chat;
 
+import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -32,7 +34,9 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session) {
-        //TODO: add on open connection.
+        onlineSessions.put(session.getId(), session);
+
+        System.out.println("Inside WebSocketChatServer ... onOpen");
     }
 
     /**
@@ -40,7 +44,12 @@ public class WebSocketChatServer {
      */
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
-        //TODO: add send message.
+        Gson g = new Gson();
+        //Player p = g.fromJson(jsonString, Player.class)
+        Message msg = g.fromJson(jsonStr, Message.class);
+        //Message msg = new Message(jsonStr);
+
+        System.out.println("Inside WebSocketChatServer ... msg.getAction(). ... " + msg.getAction());
     }
 
     /**

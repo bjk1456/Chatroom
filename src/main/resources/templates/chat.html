@@ -55,6 +55,7 @@
                     <span class="mdui-chip-icon mdui-color-blue">
                         <i class="mdui-icon material-icons">face</i></span>
                     <span class="mdui-chip-title">Online Users</span>
+
                     <!-- TODO: check online number num -->
                 </div>
                 <!-- TODO: add a message container -->
@@ -83,6 +84,8 @@
          */
         webSocket.onopen = function (event) {
             console.log('WebSocket open connection');
+            console.log("event is ", event);
+            webSocket.send(JSON.stringify({username: $('#username').text(), msg: "Sup doode?", action: "ENTER"}));
         };
 
         /**
