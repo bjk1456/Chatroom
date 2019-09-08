@@ -5,38 +5,48 @@ package edu.udacity.java.nano.chat;
  */
 public class Message {
 
-    private String action;
+    private String type;
 
-    private String message;
+    private String msg;
+
+    private String username;
 
     public Message() {
     }
 
-    public Message(String action) {
-        this.action = action;
-        System.out.println("Just created a new Message object and it's action is " + action);
+    public Message(String type) {
+        this.type = type;
+        System.out.println("Just created a new Message object and it's action is " + type);
     }
 
-    public Message(String action, String message) {
-        this.action = action;
-        this.message = message;
-        System.out.println("Just created a new Message object and it's action is " + action);
+    public Message(String type, String msg) {
+        this.type = type;
+        this.msg = msg;
+        System.out.println("Just created a new Message object and it's action is " + type);
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getAction() {
-        return action;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getMessage() {
-        return message;
+    public String getType() {
+        return type;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
 

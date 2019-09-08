@@ -1,11 +1,12 @@
 package edu.udacity.java.nano.chat;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.HtmlUtils;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +27,13 @@ public class WebSocketChatServer {
     private static Map<String, Session> onlineSessions = new ConcurrentHashMap<>();
 
     private static void sendMessageToAll(String msg) {
-        //TODO: add send message method.
+        onlineSessions.forEach((k,v ) -> {
+            try {
+                v.getBasicRemote().sendText(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -34,9 +41,12 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session) {
+        System.out.println(session.getUserProperties().toString());
+        JSONObject jsonObject = new JSONObject();
         onlineSessions.put(session.getId(), session);
-
-        System.out.println("Inside WebSocketChatServer ... onOpen");
+        jsonObject.put("onlineCount", onlineSessions.size());
+        this.sendMessageToAll(jsonObject.toString());
+        //System.out.println("Inside WebSocketChatServer ... onOpen");
     }
 
     /**
@@ -45,11 +55,38 @@ public class WebSocketChatServer {
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
         Gson g = new Gson();
+        JSONObject jsonObject = new JSONObject();
+        //jsonObject.put("data", "Sup dawggggg??? ... You have entered!!!");
         //Player p = g.fromJson(jsonString, Player.class)
+        System.out.println("jsonStr is " + jsonStr);
         Message msg = g.fromJson(jsonStr, Message.class);
+        switch(msg.getType()){
+
+            case("ENTER"):
+                try {
+                    onlineSessions.put(msg.getUsername(), session);
+                    //session.getBasicRemote().sendText(jsonObject.toString());
+                    jsonObject.put("onlineCount", onlineSessions.size());
+                    session.getBasicRemote().sendText(jsonObject.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            case("SPEAK"):
+                jsonObject.put("type", "SPEAK");
+                jsonObject.put("msg", msg.getUsername() + ": " + msg.getMsg());
+                jsonObject.put("onlineCount", onlineSessions.size());
+                //this.sendMessageToAll(msg.getUsername() + ": " + msg.getMsg());
+                this.sendMessageToAll(jsonObject.toString());
+
+
+
+        }
         //Message msg = new Message(jsonStr);
 
-        System.out.println("Inside WebSocketChatServer ... msg.getAction(). ... " + msg.getAction());
+        System.out.println("Inside WebSocketChatServer ... msg.getAction(). ... " + msg.getType());
+        System.out.println("Inside WebSocketChatServer ... msg.getMessage(). ... " + msg.getMsg());
+
+
     }
 
     /**
@@ -57,7 +94,13 @@ public class WebSocketChatServer {
      */
     @OnClose
     public void onClose(Session session) {
-        //TODO: add close connection.
+        System.out.println("onClose was called ... the session  id is " + session.getId());
+        onlineSessions.remove(session.getId());
+        try {
+            session.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
