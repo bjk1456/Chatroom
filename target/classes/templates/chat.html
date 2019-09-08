@@ -89,8 +89,6 @@
          */
         webSocket.onopen = function (event) {
             console.log('WebSocket open connection');
-            console.log("event is ", event);
-            //webSocket.send(JSON.stringify({username: $('#username').text(), type: "ENTER"}));
         };
 
         /**
@@ -100,9 +98,7 @@
             console.log('WebSocket Receives：%c' + event.data, 'color:green');
             //Receive Message from Server
             var message = JSON.parse(event.data) || {};
-            console.log("message.onlineCount == ", message.onlineCount);
             var messageContainer = $('#message-container');
-            console.log(messageContainer);
             if (message.type === 'SPEAK') {
                 messageContainer.append(
                     '<div class="mdui-card" style="margin: 10px 0;">' +
