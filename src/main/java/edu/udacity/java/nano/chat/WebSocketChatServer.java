@@ -44,6 +44,7 @@ public class WebSocketChatServer {
         JSONObject jsonObject = new JSONObject();
         onlineSessions.put(session.getId(), session);
         jsonObject.put("onlineCount", onlineSessions.size());
+        jsonObject.put("type", "ENTER");
         this.sendMessageToAll(jsonObject.toString());
     }
 
@@ -75,11 +76,15 @@ public class WebSocketChatServer {
     public void onClose(Session session) {
         System.out.println("onClose was called ... the session  id is " + session.getId());
         onlineSessions.remove(session.getId());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("onlineCount", onlineSessions.size());
+        jsonObject.put("type", "CLOSE");
         try {
             session.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.sendMessageToAll(jsonObject.toString());
     }
 
     /**
