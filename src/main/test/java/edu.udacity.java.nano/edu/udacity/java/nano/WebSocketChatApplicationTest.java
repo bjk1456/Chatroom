@@ -1,4 +1,4 @@
-package edu.udacity.java.nano;
+
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -24,16 +24,18 @@ class WebSocketChatApplicationTest {
 
     @Autowired
     private MockMvc mvc;
-    private SeleniumConfig config;
+    private edu.udacity.java.nano.SeleniumConfig config;
     private String url = "http://localhost:8080/";
+    //WebDriver driver;
     @org.junit.jupiter.api.Test
+
 
     @Before
     public void LaunchBrowser() {
 
-        System.setProperty("webdriver.firefox.marionette","~/Downloads/geckodriver");
-        WebDriver driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        System.setProperty("webdriver.gecko.driver","/Users/benjaminkelly/Downloads/geckodriver");
+        FirefoxDriver driver = new FirefoxDriver();
+        driver.get("http://localhost:8080/");
     }
     void main() {
     }
