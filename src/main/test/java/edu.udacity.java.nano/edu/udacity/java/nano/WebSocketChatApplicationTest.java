@@ -2,6 +2,7 @@
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +25,30 @@ class WebSocketChatApplicationTest {
 
     @Autowired
     private MockMvc mvc;
-    private edu.udacity.java.nano.SeleniumConfig config;
     private String url = "http://localhost:8080/";
     //WebDriver driver;
-    @org.junit.jupiter.api.Test
+    WebDriver driver;
 
 
     @Before
-    public void LaunchBrowser() {
+    public void launchBrowser() {
 
-        System.setProperty("webdriver.gecko.driver","/Users/benjaminkelly/Downloads/geckodriver");
-        FirefoxDriver driver = new FirefoxDriver();
-        driver.get("http://localhost:8080/");
+
     }
     void main() {
     }
 
     @org.junit.jupiter.api.Test
     void login() throws Exception {
-        mvc.perform( MockMvcRequestBuilders
-                .get("/")
-                .accept(MediaType. APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[*].employeeId").isNotEmpty());
+        System.setProperty("webdriver.gecko.driver","/Users/kelbenj/Downloads/geckodriver");
+        this.driver = new FirefoxDriver();
+        this.driver.get("http://localhost:8080/");
+        this.driver.findElement(By.id("username")).sendKeys("Jack");
+        driver.findElement(By.className("act-but")).click();
+        this.driver.get("http://localhost:8080/");
+        this.driver.findElement(By.id("username")).sendKeys("Same");
+        driver.findElement(By.className("act-but")).click();
+        assertEquals("2",driver.findElement(By.className("chat-num")).getText());
     }
 
     @org.junit.jupiter.api.Test
