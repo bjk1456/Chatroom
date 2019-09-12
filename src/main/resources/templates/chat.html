@@ -14,7 +14,7 @@
         <span class="mdui-typo-title">Chat Room</span>
         <div class="mdui-toolbar-spacer"></div>
         <a class="mdui-btn mdui-btn-icon" th:href="@{/}">
-            <i class="mdui-icon material-icons">exit_to_app</i>
+            <i id="exitButton" class="mdui-icon material-icons">exit_to_app</i>
         </a>
     </div>
 </div>
@@ -40,7 +40,7 @@
                         <button class="mdui-btn mdui-color-theme mdui-ripple"
                                 onclick="clearMsg()">Clear
                         </button>
-                        <button class="mdui-btn mdui-color-theme mdui-ripple"
+                        <button class="mdui-btn mdui-color-theme mdui-ripple" id="sendMsg"
                                 onclick="sendMsgToServer()">Send
                         </button>
                     </div>

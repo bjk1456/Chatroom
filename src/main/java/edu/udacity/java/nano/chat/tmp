@@ -1,3 +1,0 @@
-jsonObject.put("type", "SPEAK");
-                jsonObject.put("msg", msg);
-                v.getBasicRemote().sendText(jsonObject.toString());
