@@ -3,6 +3,8 @@
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,14 +43,29 @@ class WebSocketChatApplicationTest {
 
     @org.junit.jupiter.api.Test
     void login() throws Exception {
-        System.setProperty("webdriver.gecko.driver","/Users/kelbenj/Downloads/geckodriver");
+        System.setProperty("webdriver.gecko.driver","/Users/benjaminkelly/Downloads/geckodriver");
         this.driver = new FirefoxDriver();
         this.driver.get("http://localhost:8080/");
         this.driver.findElement(By.id("username")).sendKeys("Jack");
-        driver.findElement(By.className("act-but")).click();
+        this.driver.findElement(By.className("act-but")).click();
+
+        this.driver.findElement(By.cssSelector("body")).sendKeys(Keys.COMMAND +"t");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.open(\"http://localhost:8080\");");
+        ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1));
+        this.driver.findElement(By.id("username")).sendKeys("Sam");
+        this.driver.findElement(By.className("act-but")).click();
+
+        /**
+        ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(0));
+
         this.driver.get("http://localhost:8080/");
         this.driver.findElement(By.id("username")).sendKeys("Same");
         driver.findElement(By.className("act-but")).click();
+         */
+
         assertEquals("2",driver.findElement(By.className("chat-num")).getText());
     }
 
